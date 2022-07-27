@@ -4,10 +4,37 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>Seahorse Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <canvas id="canvas1"></canvas>
+
+      <!-- characters -->
+      <img style="display: none" id="player" src="assets/player.png" />
+      <img style="display: none" id="angler1" src="assets/angler1.png" />
+      <img style="display: none" id="angler2" src="assets/angler2.png" />
+      <img style="display: none" id="lucky" src="assets/lucky.png" />
+      <img style="display: none" id="hivewhale" src="assets/hivewhale.png" />
+      <img style="display: none" id="drone" src="assets/drone.png" />
+
+      <!-- props -->
+      <img style="display: none" id="projectile" src="assets/projectile.png" />
+      <img style="display: none" id="gears" src="assets/gears.png" />
+      <img style="display: none" id="fireExplosion" src="assets/fireExplosion.png" />
+      <img style="display: none" id="smokeExplosion" src="assets/smokeExplosion.png" />
+
+      <!-- environment -->
+      <img style="display: none" id="layer1" src="assets/layer1.png" />
+      <img style="display: none" id="layer2" src="assets/layer2.png" />
+      <img style="display: none" id="layer3" src="assets/layer3.png" />
+      <img style="display: none" id="layer4" src="assets/layer4.png" />
+    </div>
+    <div id="error" style="position:fixed;bottom:2rem; right: 2rem; color: red;
+    background-color: gray"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
