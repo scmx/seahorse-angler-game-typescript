@@ -242,14 +242,15 @@ class Enemy {
   markedForDeletion = false;
   lives = 5;
   score: number;
-  image = new Image();
+  image: HTMLImageElement;
   frameX = 0;
   frameY = 0;
   maxFrame = 37;
   type = "";
 
-  constructor(game: Game) {
+  constructor(game: Game, image: HTMLImageElement) {
     this.game = game;
+    this.image = image;
     this.x = game.width;
     this.speedX = Math.random() * -1.5 - 0.5;
     this.width = 50;
@@ -291,13 +292,12 @@ class Enemy {
 class Angler1 extends Enemy {
   frameY: number;
   lives = 5;
+  width = 228;
+  height = 169;
 
   constructor(game: Game) {
-    super(game);
-    this.width = 228;
-    this.height = 169;
+    super(game, getImage("angler1"));
     this.y = Math.random() * (this.game.height * 0.95 - this.height);
-    this.image = getImage("angler1");
     this.frameY = Math.floor(Math.random() * 3);
     this.score = this.lives;
   }
@@ -306,13 +306,12 @@ class Angler1 extends Enemy {
 class Angler2 extends Enemy {
   frameY: number;
   lives = 6;
+  width = 213;
+  height = 165;
 
   constructor(game: Game) {
-    super(game);
-    this.width = 213;
-    this.height = 165;
+    super(game, getImage("angler2"));
     this.y = Math.random() * (this.game.height * 0.95 - this.height);
-    this.image = getImage("angler2");
     this.frameY = Math.floor(Math.random() * 2);
     this.score = this.lives;
   }
@@ -327,25 +326,22 @@ class LuckyFish extends Enemy {
   score = 15;
 
   constructor(game: Game) {
-    super(game);
+    super(game, getImage("lucky"));
     this.y = Math.random() * (this.game.height * 0.95 - this.height);
-    this.image = getImage("lucky");
     this.frameY = Math.floor(Math.random() * 2);
   }
 }
 
 class HiveWhale extends Enemy {
-  frameY: number;
+  frameY = 0;
   lives = 20;
   type = "hive";
   width = 400;
   height = 227;
 
   constructor(game: Game) {
-    super(game);
+    super(game, getImage("hivewhale"));
     this.y = Math.random() * (this.game.height * 0.95 - this.height);
-    this.image = getImage("hivewhale");
-    this.frameY = 0;
     this.score = this.lives;
     this.speedX = Math.random() * -1.2 - 0.2;
   }
@@ -359,10 +355,9 @@ class Drone extends Enemy {
   height = 95;
 
   constructor(game: Game, x: number, y: number) {
-    super(game);
+    super(game, getImage("drone"));
     this.x = x;
     this.y = y;
-    this.image = getImage("drone");
     this.frameY = Math.floor(Math.random() * 2);
     this.score = this.lives;
     this.speedX = Math.random() * -4.2 - 0.5;
@@ -397,10 +392,6 @@ class Layer {
 
 class Background {
   game: Game;
-  image1: HTMLImageElement;
-  image2: HTMLImageElement;
-  image3: HTMLImageElement;
-  image4: HTMLImageElement;
   layer1: Layer;
   layer2: Layer;
   layer3: Layer;
@@ -409,14 +400,10 @@ class Background {
 
   constructor(game: Game) {
     this.game = game;
-    this.image1 = getImage("layer1");
-    this.image2 = getImage("layer2");
-    this.image3 = getImage("layer3");
-    this.image4 = getImage("layer4");
-    this.layer1 = new Layer(this.game, this.image1, 0.5);
-    this.layer2 = new Layer(this.game, this.image2, 0.8);
-    this.layer3 = new Layer(this.game, this.image3, 1.2);
-    this.layer4 = new Layer(this.game, this.image4, 1.5);
+    this.layer1 = new Layer(this.game, getImage("layer1"), 0.5);
+    this.layer2 = new Layer(this.game, getImage("layer2"), 0.8);
+    this.layer3 = new Layer(this.game, getImage("layer3"), 1.2);
+    this.layer4 = new Layer(this.game, getImage("layer4"), 1.5);
     this.layers.push(this.layer1, this.layer2, this.layer3, this.layer4);
   }
 
