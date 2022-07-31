@@ -1,7 +1,10 @@
 import "./style.css";
 
-const upKeys = ["ArrowUp", "k"];
+const leftKeys = ["ArrowLeft", "h"];
 const downKeys = ["ArrowDown", "j"];
+const upKeys = ["ArrowUp", "k"];
+const rightKeys = ["ArrowRight", "l"];
+const moveKeys = [...leftKeys, ...downKeys, ...upKeys, ...rightKeys];
 const shootKeys = [" ", "Enter"];
 
 class InputHandler {
@@ -9,8 +12,7 @@ class InputHandler {
   constructor(game: Game) {
     this.game = game;
     window.addEventListener("keydown", (e) => {
-      if (upKeys.includes(e.key) || downKeys.includes(e.key))
-        this.game.keys.add(e.key as any);
+      if (moveKeys.includes(e.key)) this.game.keys.add(e.key as any);
       else if (shootKeys.includes(e.key)) this.game.player.shootTop();
       else if (e.key === "d") this.game.debug = !this.game.debug;
     });
@@ -129,6 +131,7 @@ class Player {
   frameX = 0;
   frameY = 0;
   maxFrame = 37;
+  speedX = 0;
   speedY = 0;
   maxSpeed = 2;
   projectiles = new Set<Projectile>();
@@ -142,17 +145,26 @@ class Player {
   }
 
   update(deltaTime: number) {
+    if (leftKeys.some((k) => this.game.keys.has(k)))
+      this.speedX = -this.maxSpeed;
+    else if (rightKeys.some((k) => this.game.keys.has(k)))
+      this.speedX = this.maxSpeed;
+    else this.speedX = 0;
+
+    // horizontal movement within boundaries
+    const xmin = 20;
+    const xmax = this.game.width * 0.5 - this.width * 0.5;
+    this.x = Math.max(xmin, Math.min(xmax, this.x + this.speedX));
+
     if (upKeys.some((k) => this.game.keys.has(k))) this.speedY = -this.maxSpeed;
     else if (downKeys.some((k) => this.game.keys.has(k)))
       this.speedY = this.maxSpeed;
     else this.speedY = 0;
 
-    this.y += this.speedY;
-
-    // vertical boundaries
-    if (this.y > this.game.height - this.height * 0.5)
-      this.y = this.game.height - this.height * 0.5;
-    else if (this.y < -this.height * 0.5) this.y = -this.height * 0.5;
+    // vertical movement within boundaries
+    const ymin = -this.height * 0.5;
+    const ymax = this.game.height - this.height * 0.5;
+    this.y = Math.max(ymin, Math.min(ymax, this.y + this.speedY));
 
     // handle projectiles
     for (const projectile of this.projectiles) {
