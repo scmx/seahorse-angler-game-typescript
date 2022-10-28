@@ -565,6 +565,7 @@ class Game {
 
   speed = 1;
   gameOver = false;
+  gameOverTime = 0
   gameTime = 0;
   timeLimit = 30000;
   score = 0;
@@ -581,7 +582,10 @@ class Game {
 
   update(deltaTime: number) {
     if (!this.gameOver) this.gameTime += deltaTime;
-    if (this.gameTime > this.timeLimit) this.gameOver = true;
+    if (this.gameTime > this.timeLimit) {
+      this.gameOver = true;
+      this.gameOverTime = Date.now()
+    }
 
     this.background.update(deltaTime);
     this.player.update(deltaTime);
@@ -738,10 +742,20 @@ addEventListener("load", () => {
   const ctx = canvas.getContext("2d")!;
   canvas.width = 1000;
   canvas.height = 500;
-  const game = new Game(canvas.width, canvas.height);
-  window.game = game;
-  let lastTime = 0;
 
+  let game: Game;
+  function initGame() {
+    game = new Game(canvas.width, canvas.height);
+  }
+  initGame();
+
+  window.addEventListener("keydown", () => {
+    if (game.gameOver && game.gameOverTime + 5000 < Date.now()) {
+      initGame()
+    }
+  });
+
+  let lastTime = 0;
   function animate(timeStamp: number) {
     const deltaTime = timeStamp - lastTime;
     lastTime = timeStamp;

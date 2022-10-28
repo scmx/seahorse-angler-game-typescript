@@ -37,3 +37,7 @@ body {
   background: #4d79bc;
   font-family: "Bangers", cursive;
 }
+
+.hidden {
+  display: none;
+}
