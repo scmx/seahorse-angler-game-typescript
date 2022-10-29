@@ -30,6 +30,7 @@ class Projectile {
   image: HTMLImageElement;
   width = 10;
   height = 3;
+  xMax: number;
   speed = 3;
   markedForDeletion = false;
 
@@ -38,11 +39,12 @@ class Projectile {
     this.x = x;
     this.y = y;
     this.image = getImage("projectile");
+    this.xMax = Math.min(game.width * 0.95, game.width * 0.7 + x)
   }
 
   update(_deltaTime: number) {
     this.x += this.speed;
-    if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
+    if (this.x > this.xMax) this.markedForDeletion = true;
   }
 
   draw(context: CanvasRenderingContext2D) {
