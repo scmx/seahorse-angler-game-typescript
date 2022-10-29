@@ -5,7 +5,7 @@ const downKeys = ["ArrowDown", "j"];
 const upKeys = ["ArrowUp", "k"];
 const rightKeys = ["ArrowRight", "l"];
 const moveKeys = [...leftKeys, ...downKeys, ...upKeys, ...rightKeys];
-const shootKeys = [" ", "Enter"];
+const shootKeys = [" ", "Enter", "0"];
 const sounds = new Map<string, any>()
 const laserShoot2 = sfxr.toAudio('9BbhBjsLbFTwNjJD9ThUzKTqFCFUwaUMdwobSWj2HGfkqVjEJP6sVUr8TNvCnNWRtReebPpxZfMySaeL9wBr89Wuv9RP6K1zyUtUctif5HB1ZsHoghr7Ax9Bs')
 
