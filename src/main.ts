@@ -204,7 +204,7 @@ class Player {
       } else {
         this.powerUpTimer += deltaTime;
         this.frameY = 1;
-        this.game.ammo += 0.1;
+        if (!this.game.gameOver) this.game.ammo += 0.1;
       }
   }
 
