@@ -608,10 +608,12 @@ class Game {
   }
 
   update(deltaTime: number) {
-    if (!this.gameOver) this.gameTime += deltaTime;
-    if (this.gameTime > this.timeLimit) {
-      this.gameOver = true;
-      this.gameOverTime = Date.now()
+    if (!this.gameOver) {
+      this.gameTime += deltaTime;
+      if (this.gameTime > this.timeLimit && this.score < this.winningScore) {
+        this.gameOver = true;
+        this.gameOverTime = Date.now()
+      }
     }
 
     this.background.update(deltaTime);
