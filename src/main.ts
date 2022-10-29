@@ -12,8 +12,7 @@ class InputHandler {
   constructor(game: Game) {
     this.game = game;
     window.addEventListener("keydown", (e) => {
-      if (moveKeys.includes(e.key)) this.game.keys.add(e.key as any);
-      else if (shootKeys.includes(e.key)) this.game.player.shootTop();
+      if (moveKeys.includes(e.key) || shootKeys.includes(e.key)) this.game.keys.add(e.key as any);
       else if (e.key === "d") this.game.debug = !this.game.debug;
     });
     window.addEventListener("keyup", (e) => {
@@ -138,6 +137,8 @@ class Player {
   powerUp = false;
   powerUpTimer = 0;
   powerUpLimit = 10000;
+  shootTimer = 0
+  shootInterval = 100
 
   constructor(game: Game) {
     this.game = game;
@@ -150,6 +151,12 @@ class Player {
     else if (rightKeys.some((k) => this.game.keys.has(k)))
       this.speedX = this.maxSpeed;
     else this.speedX = 0;
+
+    if (this.shootTimer < this.shootInterval) this.shootTimer += deltaTime;
+    else if (shootKeys.some((k) => this.game.keys.has(k))) {
+      this.shootTop();
+      this.shootTimer = 0
+    }
 
     // horizontal movement within boundaries
     const xmin = 20;
