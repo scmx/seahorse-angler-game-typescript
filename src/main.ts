@@ -701,7 +701,8 @@ class Game {
         this.enemies.delete(enemy);
       }
     }
-    if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
+    const interval = this.enemyInterval / (Math.max(1, Math.min(200, this.score)) ** (1 / 3))
+    if (this.enemyTimer > interval && !this.gameOver) {
       this.addEnemy();
       this.enemyTimer = 0;
     } else {
