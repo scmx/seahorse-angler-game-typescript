@@ -6,6 +6,17 @@ const upKeys = ["ArrowUp", "k"];
 const rightKeys = ["ArrowRight", "l"];
 const moveKeys = [...leftKeys, ...downKeys, ...upKeys, ...rightKeys];
 const shootKeys = [" ", "Enter"];
+const sounds = new Map<string, any>()
+const laserShoot2 = sfxr.toAudio('9BbhBjsLbFTwNjJD9ThUzKTqFCFUwaUMdwobSWj2HGfkqVjEJP6sVUr8TNvCnNWRtReebPpxZfMySaeL9wBr89Wuv9RP6K1zyUtUctif5HB1ZsHoghr7Ax9Bs')
+
+function playSound(preset: string) {
+  let sound = sounds.get(preset)
+  if (!sound) {
+    sound = sfxr.generate(preset)
+    sounds.set(preset, sound)
+  }
+  sfxr.play(sound)
+}
 
 class InputHandler {
   game: Game;
@@ -217,6 +228,7 @@ class Player {
   }
 
   shootTop() {
+    playSound('laserShoot')
     if (this.game.ammo > 0) {
       this.projectiles.add(
         new Projectile(this.game, { x: this.x + 80, y: this.y + 30 })
@@ -235,9 +247,15 @@ class Player {
   }
 
   enterPowerUp() {
+    playSound('powerUp')
     this.powerUpTimer = 0;
     this.powerUp = true;
     if (this.game.ammo < this.game.maxAmmo) this.game.ammo = this.game.maxAmmo;
+  }
+
+  takeDamage() {
+    playSound('explosion')
+    this.game.score--;
   }
 }
 
@@ -632,7 +650,7 @@ class Game {
           );
         }
         if (enemy.type === "lucky") this.player.enterPowerUp();
-        else if (!this.gameOver) this.score--;
+        else if (!this.gameOver) this.player.takeDamage()
       }
       for (const projectile of this.player.projectiles) {
         if (this.checkCollision(projectile, enemy)) {
@@ -657,6 +675,7 @@ class Game {
             }
             enemy.markedForDeletion = true;
             this.addExplosion(enemy);
+            laserShoot2.play()
             if (enemy.type === "hive") {
               for (let i = 0; i < 5; i++) {
                 this.enemies.add(
@@ -793,4 +812,12 @@ addEventListener("error", (event) => {
 
 function getImage(id: string) {
   return document.getElementById(id)! as HTMLImageElement;
+}
+
+declare global {
+  const sfxr: {
+    generate(preset: string): any;
+    play(sound: any): void
+    toAudio(sound: any): HTMLAudioElement
+  }
 }
