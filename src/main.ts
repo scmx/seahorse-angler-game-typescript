@@ -6,16 +6,18 @@ const upKeys = ["ArrowUp", "k"];
 const rightKeys = ["ArrowRight", "l"];
 const moveKeys = [...leftKeys, ...downKeys, ...upKeys, ...rightKeys];
 const shootKeys = [" ", "Enter", "0"];
-const sounds = new Map<string, any>()
+const soundsGenerated = new Map<string, any[]>()
 const laserShoot2 = sfxr.toAudio('9BbhBjsLbFTwNjJD9ThUzKTqFCFUwaUMdwobSWj2HGfkqVjEJP6sVUr8TNvCnNWRtReebPpxZfMySaeL9wBr89Wuv9RP6K1zyUtUctif5HB1ZsHoghr7Ax9Bs')
 
 function playSound(preset: string) {
-  let sound = sounds.get(preset)
-  if (!sound) {
-    sound = sfxr.generate(preset)
-    sounds.set(preset, sound)
+  let sounds = soundsGenerated.get(preset)
+  if (!sounds) {
+    soundsGenerated.set(preset, sounds = [])
   }
-  sfxr.play(sound)
+  if (sounds.length < 5) {
+    sounds.push(sfxr.generate(preset))
+  }
+  sfxr.play(sample(sounds))
 }
 
 class InputHandler {
@@ -815,6 +817,10 @@ addEventListener("error", (event) => {
 
 function getImage(id: string) {
   return document.getElementById(id)! as HTMLImageElement;
+}
+
+function sample<T>(list: T[]): T {
+  return list[Math.floor(Math.random() * list.length)];
 }
 
 declare global {
